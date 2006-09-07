@@ -1,0 +1,51 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Sycorax.AutoUpdate</RootNamespace>
+    <AssemblyName>Sycorax Auto Update</AssemblyName>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{63F94995-792D-44F7-86BB-E3C4DE4DA109}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <Optimize>False</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>True</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoUpdateService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AutoUpdateServiceInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sycorax Library\Sycorax Library.csproj">
+      <Project>{F44648CC-244D-4FE8-A8B4-6629209EFBE6}</Project>
+      <Name>Sycorax Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
