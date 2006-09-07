@@ -10,9 +10,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Sycorax Index Builder")]
 [assembly: AssemblyDescription("Création ou regénération de l'index.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Double V Network")]
+[assembly: AssemblyCompany("Espace Win Open Source Project")]
 [assembly: AssemblyProduct("Sycorax")]
-[assembly: AssemblyCopyright("(c) 2006, Sébastien Santoro, tous droits réservés.")]
+[assembly: AssemblyCopyright("(c) 2006, Espace Win Open Source Project, tous droits réservés.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

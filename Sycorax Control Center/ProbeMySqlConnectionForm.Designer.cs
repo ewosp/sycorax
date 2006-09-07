@@ -1,4 +1,4 @@
-namespace Sycorax.IndexBuilder {
+namespace Sycorax.ControlCenter {
     partial class ProbeMySqlConnectionForm {
         /// <summary>
         /// Required designer variable.
