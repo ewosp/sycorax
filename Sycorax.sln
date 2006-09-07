@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Control Center", "Sycorax Control Center\Sycorax Control Center.csproj", "{A310DE6D-EC52-43A3-A217-76515C041508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Library", "Sycorax Library\Sycorax Library.csproj", "{F44648CC-244D-4FE8-A8B4-6629209EFBE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Auto Update", "Sycorax Auto Update\Sycorax Auto Update.csproj", "{63F94995-792D-44F7-86BB-E3C4DE4DA109}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Auto Update CLI", "Sycorax Auto Update CLI\Sycorax Auto Update CLI.csproj", "{3C360CD4-C9F4-48B6-865B-4C140E7617A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A310DE6D-EC52-43A3-A217-76515C041508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A310DE6D-EC52-43A3-A217-76515C041508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A310DE6D-EC52-43A3-A217-76515C041508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A310DE6D-EC52-43A3-A217-76515C041508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44648CC-244D-4FE8-A8B4-6629209EFBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44648CC-244D-4FE8-A8B4-6629209EFBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44648CC-244D-4FE8-A8B4-6629209EFBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44648CC-244D-4FE8-A8B4-6629209EFBE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F94995-792D-44F7-86BB-E3C4DE4DA109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F94995-792D-44F7-86BB-E3C4DE4DA109}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F94995-792D-44F7-86BB-E3C4DE4DA109}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F94995-792D-44F7-86BB-E3C4DE4DA109}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

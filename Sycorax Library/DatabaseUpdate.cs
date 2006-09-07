@@ -1,0 +1,315 @@
+/*
+ * (c) Sébastien Santoro aka Dereckson, 2006, tous droits réservés
+ *
+ * Date: 13/07/2006
+ * Time: 20:09
+ *
+ */
+
+using System;
+using ID3COM;
+using System.IO;
+using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
+
+namespace Sycorax {
+    /// <summary>
+    /// Mise à jour de la base de données
+    /// </summary>
+    public class DatabaseUpdate : IDisposable {
+        public DatabaseUpdate (string connectionString) {
+            //TODO : initalisation connexion MySQL à partir des préférences
+            conn = new MySqlConnection(connectionString);
+            conn.Open();
+        }
+
+        MySqlConnection conn;
+        
+        /// <summary>
+        /// Parses the file properties.
+        /// </summary>
+        /// <param name="file">The file to analyze.</param>
+        /// <returns>Instance of TuneToIndex containing file properties</returns>
+        public TuneToIndex ParseProperties (string fileName) {
+            TuneToIndex tune = new TuneToIndex();
+            tune.Path = Path.GetFullPath(fileName);
+            
+            //This is temporary code for Megalo, a sample of logic to parse filename
+            //In release version, of course, we should read global and local preferences to know how to read filename
+
+            string nom = Path.GetFileNameWithoutExtension(fileName);
+            //Recherche de ()
+            Match match = Regex.Match(fileName, @"\(.*\)");
+            if (match.Success) {
+                //On prend l'intérieur des () en commentaire
+                tune.Comment = match.Value.Substring(1, match.Length - 2);
+                //Et on l'efface du nom
+                nom = nom.Replace(match.Value, "").Trim();
+            }
+            //Le nom contient-il un tiret ?
+            if (nom.Contains("-")) {
+                string[] morceau = nom.Split(new char[1] { '-' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                if (morceau.Length == 1) {
+                    //Euh le tiret n'était précédé ou suivi de rien :/
+                    tune.Title = morceau[0];
+                } else {
+                    //Et voici le cas normal :)
+                    tune.By = morceau[0];
+                    tune.Title = morceau[1];
+                }
+            } else {
+                //Titre
+                tune.Title = nom;
+            }
+
+            return tune;
+        }
+
+        /// <summary>
+        /// Revérifie les propriétés d'un fichier (tags idv3, durée) qui vient d'être modifié
+        /// </summary>
+        /// <param name="file">fichier modifié</param>
+        public void RecheckProperties (string file) {
+            //ID3ComTagClass Tag = id3lib.GetTag(file);
+            Log(String.Format("File updated: {0}", file));
+        }
+
+        /// <summary>
+        /// Ajoute un nouveau fichier
+        /// </summary>
+        /// <param name="file">fichier à ajouter</param>
+        public void AddFile (string file) {
+            TuneToIndex tune = ParseProperties(file);
+            string sql; MySqlCommand cmd;
+            int TuneID;
+            
+
+            //1 - add tune if needed and get its ID
+            if (IsTuneExists(tune)) {
+                TuneID = GetTuneID(tune);
+            } else {
+                sql = String.Format(
+                    @"INSERT INTO Tunes (tune_by, tune_title, tune_comment)
+                      VALUES ('{0}', '{1}', '{2}')",
+                    SqlEscape(tune.By),
+                    SqlEscape(tune.Title),
+                    SqlEscape(tune.Comment)
+                 );
+                cmd = new MySqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                TuneID = LastInsertID();
+                
+                Log(String.Format("Tune added: {0} [#{1}]", tune, TuneID));
+            }
+
+            //2 - add file
+            sql = String.Format(
+                "INSERT INTO Files (file_path, tune_id) VALUES ('{0}', '{1}')",
+                SqlEscape(tune.Path),
+                TuneID
+            );
+            Log(String.Format("File added: {0}", file));
+            cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+        }
+
+        /// <summary>
+        /// Determines whether the specified tune exists.
+        /// </summary>
+        /// <param name="tune">The tune.</param>
+        /// <returns>
+        /// 	<c>true</c> if [is tune exists] [the specified tune]; otherwise, <c>false</c>.
+        /// </returns>
+        private bool IsTuneExists (TuneToIndex tune) {
+            string sql = String.Format(
+                @"SELECT count(*) FROM Tunes
+                  WHERE tune_by = '{0}' AND tune_title = '{1}' AND tune_comment = '{2}'",
+                SqlEscape(tune.By),
+                SqlEscape(tune.Title),
+                SqlEscape(tune.Comment)
+            );
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            cmd = new MySqlCommand(sql, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            int count = reader.GetInt32(0);
+            reader.Close();
+            cmd.Dispose();
+            //Si count(*) = 1, nous renvoyons true, sinon false
+            return (count > 0);
+        }
+
+        /// <summary>
+        /// Gets the tune ID.
+        /// </summary>
+        /// <param name="tune">The tune to find.</param>
+        /// <returns>The tune ID</returns>
+        private int GetTuneID (TuneToIndex tune) {
+            string sql = String.Format(
+                @"SELECT tune_id FROM Tunes
+                  WHERE tune_by = '{0}' AND tune_title = '{1}' AND tune_comment = '{2}'",
+                SqlEscape(tune.By),
+                SqlEscape(tune.Title),
+                SqlEscape(tune.Comment)
+            );
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            int id = reader.GetInt32(0);
+            reader.Close();
+            cmd.Dispose();
+            return id;
+        }
+
+        /// <summary>
+        /// Supprime un fichier
+        /// </summary>
+        /// <param name="file">fichier à supprimer</param>
+        /// <param name="deleteTuneIfOrphan">supprime également le morceau si celui-ci est orphelin</param>
+        public void DelFile (string file, bool deleteTuneIfOrphan) {
+            int TuneID = -1;
+            string sql; MySqlCommand cmd;
+
+            string filepath = SqlEscape(Path.GetFullPath(file));
+
+            if (deleteTuneIfOrphan) {
+                //Before delete the record, we've to get TuneID
+                sql = String.Format(
+                    "SELECT tune_id FROM Files WHERE file_path LIKE '{0}'",
+                    filepath
+                );
+                cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                TuneID = reader.GetInt32(0);
+                reader.Close();
+                cmd.Dispose();
+            }
+
+            //Delete file
+            sql = String.Format(
+                "DELETE FROM Files WHERE file_path LIKE '{0}'",
+                filepath
+            );
+            cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Log(String.Format("File deleted: {0}", file));
+
+            if (deleteTuneIfOrphan) {
+                //Is this tune really orphan ?
+                sql = "SELECT count(*) FROM Files WHERE tune_id = " + TuneID;
+                cmd = new MySqlCommand(sql, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                int howMany = reader.GetInt32(0);
+                reader.Close();
+                cmd.Dispose();
+                
+                if (howMany == 0) {
+                    //Yes, so we can really delete it :
+                    sql = "DELETE FROM Tunes WHERE tune_id = " + TuneID;
+                    cmd = new MySqlCommand(sql, conn);
+                    cmd.ExecuteNonQuery();
+                    Log(String.Format("Orphan tune #{0} has been deleted", TuneID));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Met à jour le path d'un fichier déplacé ou renommé
+        /// </summary>
+        /// <param name="oldPath">ancien path</param>
+        /// <param name="newPath">nouveau path</param>
+        public void MoveFile (string oldPath, string newPath) {
+            //Edit path
+            string sql = String.Format(
+                "UPDATE Files SET file_path = {0} WHERE file_path LIKE '{1}'",
+                SqlEscape(Path.GetFullPath(newPath)),
+                SqlEscape(Path.GetFullPath(oldPath))
+            );
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Log(String.Format("File moved: {0} -> {1}", oldPath, newPath));
+        }
+
+        #region MySQL functions
+        /// <summary>
+        /// Escape a string, sql way.
+        /// </summary>
+        /// <param name="toEscape">The string to escape.</param>
+        /// <returns>The escaped string</returns>
+        private static string SqlEscape (string toEscape) {
+            return toEscape.Replace(@"\", @"\\").Replace(@"'", @"\'");
+        }
+
+        /// <summary>
+        /// Get the last insert ID.
+        /// </summary>
+        /// <returns>last insert ID</returns>
+        private int LastInsertID () {
+            string sql = "SELECT LAST_INSERT_ID()";
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            reader.Read();
+            int returnValue = reader.GetInt32(0);
+            reader.Close();
+            cmd.Dispose();
+            return returnValue;
+        }
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose () {
+            conn.Close();
+            conn.Dispose();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Truncates the index tables (Files and Tunes).
+        /// </summary>
+        public void TruncateIndex () {
+            //Truntace files table            
+            string sql = "TRUNCATE Files";
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Log("Tables Files has been truncated.");
+
+            //Truntace tunes table
+            sql = "TRUNCATE Tunes";
+            cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Log("Tables Tunes has been truncated.");
+        }
+
+        private bool printConsoleOutput;
+        /// <summary>
+        /// Gets or sets a value indicating whether database update has to be logged in console.
+        /// </summary>
+        /// <value><c>true</c> if we've to produce console output ; otherwise, <c>false</c>.</value>
+        public bool PrintConsoleOutput {
+            get {
+                return printConsoleOutput;
+            }
+            set {
+                printConsoleOutput = value;
+            }
+        }
+
+        /// <summary>
+        /// Logs a message
+        /// </summary>
+        /// <param name="message">message to log</param>
+        public void Log (string message) {
+            string time = DateTime.Now.ToLongTimeString();
+            if (printConsoleOutput) {
+                Console.WriteLine("[{0}] {1}", time, message);
+            }
+        }
+    }
+}
