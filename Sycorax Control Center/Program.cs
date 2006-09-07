@@ -9,7 +9,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Sycorax.IndexBuilder {
+namespace Sycorax.ControlCenter {
 
     static internal class Program {
         /// <summary>
@@ -83,5 +83,10 @@ namespace Sycorax.IndexBuilder {
         /// Main options
         /// </summary>
         public static MainOptions options;
+
+		/// <summary>
+		/// Database update component
+		/// </summary>
+		public static DatabaseUpdate databaseUpdate;
     }
 }

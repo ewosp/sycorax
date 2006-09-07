@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Sycorax;
 
-namespace Sycorax.IndexBuilder {
+namespace Sycorax.ControlCenter {
     /// <summary>
     /// Probe MySQL Connection Form
     /// </summary>

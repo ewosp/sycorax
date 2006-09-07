@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Sycorax.IndexBuilder {
+namespace Sycorax.ControlCenter {
     partial class AboutBox1 : Form {
         public AboutBox1 () {
             InitializeComponent();
