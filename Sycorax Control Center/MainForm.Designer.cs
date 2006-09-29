@@ -274,7 +274,7 @@ namespace Sycorax.ControlCenter {
 			// 
 			// buttonAddFolder
 			// 
-			this.buttonAddFolder.Image = global::Sycorax.ControlCenter.Properties.Resources.add;
+			this.buttonAddFolder.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddFolder.Image")));
 			this.buttonAddFolder.Location = new System.Drawing.Point(367, 3);
 			this.buttonAddFolder.Name = "buttonAddFolder";
 			this.buttonAddFolder.Size = new System.Drawing.Size(23, 23);
@@ -496,7 +496,7 @@ namespace Sycorax.ControlCenter {
 			// pictureBoxPoweredByMySql
 			// 
 			this.pictureBoxPoweredByMySql.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.pictureBoxPoweredByMySql.Image = global::Sycorax.ControlCenter.Properties.Resources.powered_by_mysql_125x64;
+			this.pictureBoxPoweredByMySql.Image = global::Sycorax.ControlCenter.Properties.Resources.poweredByMysql125x64;
 			this.pictureBoxPoweredByMySql.Location = new System.Drawing.Point(277, 3);
 			this.pictureBoxPoweredByMySql.Name = "pictureBoxPoweredByMySql";
 			this.pictureBoxPoweredByMySql.Size = new System.Drawing.Size(125, 64);

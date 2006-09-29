@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sycorax.IndexBuilder.Properties {
+namespace Sycorax.ControlCenter.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Sycorax.IndexBuilder.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sycorax.IndexBuilder.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sycorax.ControlCenter.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,9 +67,9 @@ namespace Sycorax.IndexBuilder.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap powered_by_mysql_125x64 {
+        internal static System.Drawing.Bitmap poweredByMysql125x64 {
             get {
-                object obj = ResourceManager.GetObject("powered-by-mysql-125x64", resourceCulture);
+                object obj = ResourceManager.GetObject("poweredByMysql125x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
