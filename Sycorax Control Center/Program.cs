@@ -88,5 +88,7 @@ namespace Sycorax.ControlCenter {
 		/// Database update component
 		/// </summary>
 		public static DatabaseUpdate databaseUpdate;
+
+		public static InternalAutoUpdate internalAutoUpdate;
     }
 }

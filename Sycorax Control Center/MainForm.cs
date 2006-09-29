@@ -383,17 +383,34 @@ namespace Sycorax.ControlCenter {
 			try {
 				if (labelInternalAutoUpdateStatus.Text == "Off") {
 					//Start our internal auto update
-					
+					if (Program.internalAutoUpdate = null) {
+						Program.internalAutoUpdate = new InternalAutoUpdate();
+					}
+					Program.internalAutoUpdate.Enabled = true;
 				} else {
 					//Stop our interal auto update
+					Program.internalAutoUpdate.Enabled = false;
 				}
+				ProbeService();
 			} catch (Exception ex) {
 				if (Program.options.DebugMode) {
 					PrintException(ex);
 				}
 				return;
 			}
-			ProbeService();
+		}
+
+		public void RefreshInternalAutoUpdateLinks () {
+			if (Program.internalAutoUpdate = null || !Program.internalAutoUpdate.Enabled) {
+				//internal AutoUpdate off
+				labelInternalAutoUpdateStatus.Text = "Off";
+			} else {
+				//internal AutoUpdate on
+				labelInternalAutoUpdateStatus.Text = "On";
+			}
+			labelStatutAutoUpdateServiceResult.Text = "Pause en cours";
+			linkLabelServicePauseContinue.Tag = "Continue";
+			linkLabelServicePlayStop.Tag = "Stop";
 		}
 
 		#endregion
