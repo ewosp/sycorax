@@ -283,7 +283,11 @@ namespace Sycorax.ControlCenter {
 				Program.options.FoldersToWatch = new string[] { };
 				textBoxFolderToAdd.Clear();
 			} else {
-				AddFolder(textBoxFolderToAdd.Text);
+                if (!Directory.Exists(textBoxFolderToAdd.Text)) {
+                    DialogResult result = MessageBox.Show("Le dossier " + textBoxFolderToAdd.Text + " n'existe pas, voulez-vous vraiment l'ajouter, au risque de compromettre le bon fonctionnement de l'indexation ?", "Dossier non existant", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+				    if (result != DialogResult.Yes) return;
+                }
+                AddFolder(textBoxFolderToAdd.Text);
 			}
 		}
 
@@ -383,7 +387,7 @@ namespace Sycorax.ControlCenter {
 			try {
 				if (labelInternalAutoUpdateStatus.Text == "Off") {
 					//Start our internal auto update
-					if (Program.internalAutoUpdate = null) {
+					if (Program.internalAutoUpdate == null) {
 						Program.internalAutoUpdate = new InternalAutoUpdate();
 					}
 					Program.internalAutoUpdate.Enabled = true;
@@ -391,7 +395,7 @@ namespace Sycorax.ControlCenter {
 					//Stop our interal auto update
 					Program.internalAutoUpdate.Enabled = false;
 				}
-				ProbeService();
+                RefreshInternalAutoUpdateLinks();
 			} catch (Exception ex) {
 				if (Program.options.DebugMode) {
 					PrintException(ex);
@@ -401,16 +405,15 @@ namespace Sycorax.ControlCenter {
 		}
 
 		public void RefreshInternalAutoUpdateLinks () {
-			if (Program.internalAutoUpdate = null || !Program.internalAutoUpdate.Enabled) {
+			if (Program.internalAutoUpdate == null || !Program.internalAutoUpdate.Enabled) {
 				//internal AutoUpdate off
 				labelInternalAutoUpdateStatus.Text = "Off";
+                linkInternalAutoUpdateUp.Text = "Démarrer";
 			} else {
 				//internal AutoUpdate on
 				labelInternalAutoUpdateStatus.Text = "On";
+                linkInternalAutoUpdateUp.Text = "Arrêter";
 			}
-			labelStatutAutoUpdateServiceResult.Text = "Pause en cours";
-			linkLabelServicePauseContinue.Tag = "Continue";
-			linkLabelServicePlayStop.Tag = "Stop";
 		}
 
 		#endregion

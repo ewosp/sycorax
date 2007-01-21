@@ -24,6 +24,7 @@ namespace Sycorax {
         public SurveillanceDossiers (string path, DatabaseUpdate databaseUpdate) {
             watcher = new FileSystemWatcher(path);
             watcher.EnableRaisingEvents = true;
+            //watcher.Filter
             watcher.Changed += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.RecheckProperties(e.FullPath); };
             watcher.Created += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.AddFile(e.FullPath); };
             watcher.Deleted += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.DelFile(e.FullPath, false); };
