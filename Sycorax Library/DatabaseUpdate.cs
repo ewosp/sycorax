@@ -24,7 +24,7 @@ namespace Sycorax {
         }
 
         MySqlConnection conn;
-        
+
         /// <summary>
         /// Parses the file properties.
         /// </summary>
@@ -33,7 +33,7 @@ namespace Sycorax {
         public TuneToIndex ParseProperties (string fileName) {
             TuneToIndex tune = new TuneToIndex();
             tune.Path = Path.GetFullPath(fileName);
-            
+
             //This is temporary code for Megalo, a sample of logic to parse filename
             //In release version, of course, we should read global and local preferences to know how to read filename
 
@@ -79,10 +79,12 @@ namespace Sycorax {
         /// </summary>
         /// <param name="file">fichier à ajouter</param>
         public void AddFile (string file) {
+            //We ignore directories
+            if (Directory.Exists(file)) return;
+
             TuneToIndex tune = ParseProperties(file);
             string sql; MySqlCommand cmd;
             int TuneID;
-            
 
             //1 - add tune if needed and get its ID
             if (IsTuneExists(tune)) {
@@ -100,7 +102,7 @@ namespace Sycorax {
                 cmd.Dispose();
 
                 TuneID = LastInsertID();
-                
+
                 Log(String.Format("Tune added: {0} [#{1}]", tune, TuneID));
             }
 
@@ -207,7 +209,7 @@ namespace Sycorax {
                 int howMany = reader.GetInt32(0);
                 reader.Close();
                 cmd.Dispose();
-                
+
                 if (howMany == 0) {
                     //Yes, so we can really delete it :
                     sql = "DELETE FROM Tunes WHERE tune_id = " + TuneID;
@@ -224,15 +226,41 @@ namespace Sycorax {
         /// <param name="oldPath">ancien path</param>
         /// <param name="newPath">nouveau path</param>
         public void MoveFile (string oldPath, string newPath) {
-            //Edit path
-            string sql = String.Format(
-                "UPDATE Files SET file_path = {0} WHERE file_path LIKE '{1}'",
-                SqlEscape(Path.GetFullPath(newPath)),
-                SqlEscape(Path.GetFullPath(oldPath))
-            );
+            string logEntry, sql;
+
+            if (!Directory.Exists(newPath)) {
+                //A file ? Easy, just one row to update :)
+                sql = String.Format(
+                    "UPDATE Files SET file_path = '{0}' WHERE file_path LIKE '{1}'",
+                    SqlEscape(Path.GetFullPath(newPath)),
+                    SqlEscape(Path.GetFullPath(oldPath))
+                );
+                logEntry = String.Format("File moved: {0} -> {1}", oldPath, newPath);
+            } else {
+                /*
+                 * Arg ... we've a massive update to do :p 
+                 * We've to rename d:\oldpath\tune.mp3 into d:\newpath\tune.mp3
+                 * - WHERE file_path LIKE '{1}%' selects all files beginning with {1} ie newPath
+                 * - new file_path begins with newPath and ends with the filename
+                 *   = CONCAT(newPath, filename)
+                 *   = CONCAT('{0}', filename)
+                 *   = CONCAT('{0}', end of '{1}')
+                 *     the end of '{1}' is the substring from the character following oldPath
+                 *   = CONCAT('{0}', SUBSTRING(file_path FROM the character following oldPath)
+                 *   = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)
+                 */
+                sql = String.Format(
+                    "UPDATE Files SET file_path = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path LIKE '{1}%'",
+                    SqlEscape(Path.GetFullPath(newPath)),
+                    SqlEscape(Path.GetFullPath(oldPath))
+                );
+                logEntry = String.Format("Directory updated: {0} -> {1}", oldPath, newPath);
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
-            Log(String.Format("File moved: {0} -> {1}", oldPath, newPath));
+            Log(logEntry);
+
         }
 
         #region MySQL functions
@@ -287,19 +315,17 @@ namespace Sycorax {
             Log("Tables Tunes has been truncated.");
         }
 
+        #region Properties
         private bool printConsoleOutput;
         /// <summary>
-        /// Gets or sets a value indicating whether database update has to be logged in console.
+        /// Gets or sets a value indicating whether database update had to be logged in console.
         /// </summary>
         /// <value><c>true</c> if we've to produce console output ; otherwise, <c>false</c>.</value>
         public bool PrintConsoleOutput {
-            get {
-                return printConsoleOutput;
-            }
-            set {
-                printConsoleOutput = value;
-            }
+            get { return printConsoleOutput; }
+            set { printConsoleOutput = value; }
         }
+        #endregion
 
         /// <summary>
         /// Logs a message

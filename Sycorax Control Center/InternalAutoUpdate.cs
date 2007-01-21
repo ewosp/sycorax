@@ -20,6 +20,7 @@ namespace Sycorax.ControlCenter {
 				watchers[i] = new SurveillanceDossiers(Program.options.FoldersToWatch[i], Program.databaseUpdate);
 				watchers[i].Error += new EventHandler<ExceptionEventArgs>(surveillanceDossiers_Error);
 			}
+            enabled = true;
 		}
 
 		/// <summary>
@@ -40,9 +41,11 @@ namespace Sycorax.ControlCenter {
 		/// Stops the surveillance.
 		/// </summary>
 		private void StopSurveillance () {
+            if (watchers == null || watchers.Length == 0) return;
 			foreach (SurveillanceDossiers watcher in watchers) {
 				watcher.Dispose();
 			}
+            enabled = false;
 		}
 
 		private bool enabled;
@@ -56,7 +59,7 @@ namespace Sycorax.ControlCenter {
 			set {
 				if (enabled == value) {
 					//Nothing to do
-				} else if (enabled == true) {
+				} else if (value == true) {
 					//Ok, let's enable
 					StartSurveillance();
 				} else {

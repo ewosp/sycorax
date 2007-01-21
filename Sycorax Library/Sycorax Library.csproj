@@ -24,10 +24,6 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.ID3COM, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Interop.ID3COM.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=5.0.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\MySql.Data.dll</HintPath>
@@ -48,6 +44,16 @@
     <Compile Include="SurveillanceDossiers.cs" />
     <Compile Include="TuneToIndex.cs" />
     <Compile Include="Options\MainOptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ID3COM">
+      <Guid>{AEBA98B0-C36C-11D3-841B-0008C782A257}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
