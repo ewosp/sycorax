@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Standard-NoVista.ico" />
-    <Content Include="Standard.ico" />
     <Content Include="UI\Icon1.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
