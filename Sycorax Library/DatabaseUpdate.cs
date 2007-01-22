@@ -102,7 +102,8 @@ namespace Sycorax {
                 cmd.Dispose();
 
                 TuneID = LastInsertID();
-
+                
+                SqlLog(sql);
                 Log(String.Format("Tune added: {0} [#{1}]", tune, TuneID));
             }
 
@@ -112,10 +113,13 @@ namespace Sycorax {
                 SqlEscape(tune.Path),
                 TuneID
             );
-            Log(String.Format("File added: {0}", file));
+
             cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
             cmd.Dispose();
+
+            SqlLog(sql);
+            Log(String.Format("File added: {0}", file));
         }
 
         /// <summary>
@@ -140,6 +144,7 @@ namespace Sycorax {
             int count = reader.GetInt32(0);
             reader.Close();
             cmd.Dispose();
+            SqlLog(sql);
             //Si count(*) = 1, nous renvoyons true, sinon false
             return (count > 0);
         }
@@ -163,6 +168,7 @@ namespace Sycorax {
             int id = reader.GetInt32(0);
             reader.Close();
             cmd.Dispose();
+            SqlLog(sql);
             return id;
         }
 
@@ -189,6 +195,7 @@ namespace Sycorax {
                 TuneID = reader.GetInt32(0);
                 reader.Close();
                 cmd.Dispose();
+                SqlLog(sql);
             }
 
             //Delete file
@@ -198,6 +205,8 @@ namespace Sycorax {
             );
             cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            SqlLog(sql);
             Log(String.Format("File deleted: {0}", file));
 
             if (deleteTuneIfOrphan) {
@@ -209,12 +218,15 @@ namespace Sycorax {
                 int howMany = reader.GetInt32(0);
                 reader.Close();
                 cmd.Dispose();
+                SqlLog(sql);
 
                 if (howMany == 0) {
                     //Yes, so we can really delete it :
                     sql = "DELETE FROM Tunes WHERE tune_id = " + TuneID;
                     cmd = new MySqlCommand(sql, conn);
                     cmd.ExecuteNonQuery();
+                    cmd.Dispose();
+                    SqlLog(sql);
                     Log(String.Format("Orphan tune #{0} has been deleted", TuneID));
                 }
             }
@@ -259,6 +271,8 @@ namespace Sycorax {
 
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            SqlLog(sql);
             Log(logEntry);
 
         }
@@ -306,36 +320,32 @@ namespace Sycorax {
             string sql = "TRUNCATE Files";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            SqlLog(sql);
             Log("Tables Files has been truncated.");
 
             //Truntace tunes table
             sql = "TRUNCATE Tunes";
             cmd = new MySqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            SqlLog(sql);
             Log("Tables Tunes has been truncated.");
         }
-
-        #region Properties
-        private bool printConsoleOutput;
-        /// <summary>
-        /// Gets or sets a value indicating whether database update had to be logged in console.
-        /// </summary>
-        /// <value><c>true</c> if we've to produce console output ; otherwise, <c>false</c>.</value>
-        public bool PrintConsoleOutput {
-            get { return printConsoleOutput; }
-            set { printConsoleOutput = value; }
-        }
-        #endregion
 
         /// <summary>
         /// Logs a message
         /// </summary>
         /// <param name="message">message to log</param>
         public void Log (string message) {
-            string time = DateTime.Now.ToLongTimeString();
-            if (printConsoleOutput) {
-                Console.WriteLine("[{0}] {1}", time, message);
-            }
+            LogEntry(this, new TimestampMessageEventArgs(DateTime.Now, message));
         }
+
+        public void SqlLog (string query) {
+            SqlQuery(this, new TimestampMessageEventArgs(DateTime.Now, query));
+        }
+
+        public event EventHandler<TimestampMessageEventArgs> LogEntry;
+        public event EventHandler<TimestampMessageEventArgs> SqlQuery;
     }
 }

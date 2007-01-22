@@ -36,12 +36,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="MessageEventArgs.cs" />
     <Compile Include="ExceptionEventArgs.cs" />
     <Compile Include="DatabaseUpdate.cs" />
     <Compile Include="id3lib.cs" />
+    <Compile Include="MessageEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ProbeMySqlConnection.cs" />
     <Compile Include="SurveillanceDossiers.cs" />
+    <Compile Include="TimestampMessageEventArgs.cs" />
     <Compile Include="TuneToIndex.cs" />
     <Compile Include="Options\MainOptions.cs" />
   </ItemGroup>

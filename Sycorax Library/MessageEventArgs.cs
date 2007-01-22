@@ -14,9 +14,9 @@ namespace Sycorax {
         private string message;
 
         /// <summary>
-        /// Gets the raised exception.
+        /// Gets the message.
         /// </summary>
-        /// <value>The raised exception.</value>
+        /// <value>The message.</value>
         public string Message {
             get { return message; }
         }
