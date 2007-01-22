@@ -26,7 +26,6 @@ namespace Sycorax.AutoUpdateCLI {
                 //Initialisation de la base de données et de sa classe de mise à jour
                 Console.WriteLine("[*] Initializing database connection and update facilities ...");
                 databaseUpdate = new DatabaseUpdate(options.ConnectionString);
-                databaseUpdate.PrintConsoleOutput = true;
 
                 //Lancement d'une surveillance pour chaque dossier repris dans l'option FoldersToWatch
                 Console.WriteLine("[*] Initializing folders watch ...");
@@ -51,7 +50,7 @@ namespace Sycorax.AutoUpdateCLI {
                 Console.WriteLine();
 
                 //Oki, manage events
-
+                databaseUpdate.LogEntry += new EventHandler<TimestampMessageEventArgs>(databaseUpdate_LogEntry);
 
             } catch (Exception e) {
                 //Options XML deserialize InnerException
@@ -63,6 +62,10 @@ namespace Sycorax.AutoUpdateCLI {
                     Console.WriteLine(e.StackTrace);
                 }
             }
+        }
+
+        static void databaseUpdate_LogEntry (object sender, TimestampMessageEventArgs e) {
+            Console.WriteLine(e.ToString());
         }
 
         static void Main (string[] args) {
@@ -84,9 +87,8 @@ namespace Sycorax.AutoUpdateCLI {
 
         private static void PrintCredits () {
             Console.WriteLine("Sycorax Auto Update {0} -- Command Line Interface", Assembly.GetExecutingAssembly().GetName().Version);
-            Console.WriteLine("(c) 2006, Espace Win Open Source Project");
+            Console.WriteLine("(c) 2006-2007, Espace Win Open Source Project");
             Console.WriteLine("Project leader : Sébastien Santoro aka Dereckson [DcK]");
-            Console.WriteLine(".:: Radio #Win Technical Preview ::.");
             Console.WriteLine("______________________________________________________________________");
             Console.WriteLine();
         }

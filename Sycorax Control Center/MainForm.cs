@@ -389,6 +389,7 @@ namespace Sycorax.ControlCenter {
 					//Start our internal auto update
 					if (Program.internalAutoUpdate == null) {
 						Program.internalAutoUpdate = new InternalAutoUpdate();
+                        Program.databaseUpdate.LogEntry += new EventHandler<TimestampMessageEventArgs>(databaseUpdate_LogEntry);
 					}
 					Program.internalAutoUpdate.Enabled = true;
 				} else {
@@ -403,6 +404,11 @@ namespace Sycorax.ControlCenter {
 				return;
 			}
 		}
+
+        void databaseUpdate_LogEntry (object sender, MessageEventArgs e) {
+            textBoxLog.Text += DateTime.Now.ToLongTimeString();
+            textBoxLog.Text += Environment.NewLine;
+        }
 
 		public void RefreshInternalAutoUpdateLinks () {
 			if (Program.internalAutoUpdate == null || !Program.internalAutoUpdate.Enabled) {

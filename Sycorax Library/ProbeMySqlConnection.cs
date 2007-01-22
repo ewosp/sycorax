@@ -46,7 +46,7 @@ namespace Sycorax {
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="T:System.Data.StateChangeEventArgs"/> instance containing the event data.</param>
         private void conn_StateChange (object sender, StateChangeEventArgs e) {
-           //TODO : check the string representation of CurrenState enum
+            //TODO : check the string representation of CurrentState enum
             StatusChange(this, new MessageEventArgs(e.CurrentState.ToString()));
         }
 
@@ -65,7 +65,7 @@ namespace Sycorax {
                 lastError.Message
             );
             
-            //Throw an exception to our Error event
+            //Throws an exception to our Error event
             Error(this, new ExceptionEventArgs(new Exception(error)));
             
         }
@@ -85,8 +85,6 @@ namespace Sycorax {
         /// MySQL connection to probe
         /// </summary>
         private MySqlConnection conn;
-
-
 
         #region IDisposable Members
 
