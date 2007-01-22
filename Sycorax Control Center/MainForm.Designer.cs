@@ -592,10 +592,10 @@ namespace Sycorax.ControlCenter {
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(9, 20);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(303, 26);
+            this.label4.Size = new System.Drawing.Size(306, 26);
             this.label4.TabIndex = 10;
             this.label4.Text = "En lieu et place du service, vous pouvez lancer l\'auto update\r\ndirectement depuis" +
-                " Sycorax Conrol Center à des fins de debug.";
+                " Sycorax Control Center à des fins de debug.";
             // 
             // labelInternalAutoUpdateStatus
             // 
@@ -790,6 +790,7 @@ namespace Sycorax.ControlCenter {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(585, 569);
             this.Controls.Add(this.tabControlMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Sycorax Control Center";
             this.tabPageDebug.ResumeLayout(false);
