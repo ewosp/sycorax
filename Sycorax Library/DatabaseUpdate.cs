@@ -71,7 +71,7 @@ namespace Sycorax {
         /// <param name="file">fichier modifié</param>
         public void RecheckProperties (string file) {
             //ID3ComTagClass Tag = id3lib.GetTag(file);
-            Log(String.Format("File updated: {0}", file));
+            //Log(String.Format("File updated: {0}", file));
         }
 
         /// <summary>
@@ -338,11 +338,15 @@ namespace Sycorax {
         /// </summary>
         /// <param name="message">message to log</param>
         public void Log (string message) {
-            LogEntry(this, new TimestampMessageEventArgs(DateTime.Now, message));
+            if (LogEntry != null) {
+                LogEntry(this, new TimestampMessageEventArgs(DateTime.Now, message));
+            }
         }
 
         public void SqlLog (string query) {
-            SqlQuery(this, new TimestampMessageEventArgs(DateTime.Now, query));
+            if (SqlQuery != null) {
+                SqlQuery(this, new TimestampMessageEventArgs(DateTime.Now, query));
+            }
         }
 
         public event EventHandler<TimestampMessageEventArgs> LogEntry;

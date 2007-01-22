@@ -28,7 +28,9 @@ namespace Sycorax {
             watcher.Changed += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.RecheckProperties(e.FullPath); };
             watcher.Created += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.AddFile(e.FullPath); };
             watcher.Deleted += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.DelFile(e.FullPath, false); };
-            watcher.Error += delegate(object sender, ErrorEventArgs e) {Error(this, new ExceptionEventArgs(e.GetException())); };
+            watcher.Error += delegate(object sender, ErrorEventArgs e) {
+                if (Error != null) Error(this, new ExceptionEventArgs(e.GetException()));
+            };
             watcher.Renamed += delegate(object sender, RenamedEventArgs e) { databaseUpdate.MoveFile(e.OldFullPath, e.FullPath); };
         }
 
