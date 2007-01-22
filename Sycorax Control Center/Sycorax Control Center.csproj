@@ -6,6 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A310DE6D-EC52-43A3-A217-76515C041508}</ProjectGuid>
+    <ApplicationIcon>Standard-NoVista.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -95,6 +96,8 @@
     <None Include="UI\add.gif" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Standard-NoVista.ico" />
+    <Content Include="Standard.ico" />
     <Content Include="UI\Icon1.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
