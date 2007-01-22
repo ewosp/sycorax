@@ -264,7 +264,7 @@ namespace Sycorax {
                 sql = String.Format(
                     "UPDATE Files SET file_path = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path LIKE '{1}%'",
                     SqlEscape(Path.GetFullPath(newPath)),
-                    SqlEscape(Path.GetFullPath(oldPath))
+                    SqlEscape(SqlEscape(Path.GetFullPath(oldPath)))   //strangely, we need \\\\ escapement in WHERE clause
                 );
                 logEntry = String.Format("Directory updated: {0} -> {1}", oldPath, newPath);
             }
