@@ -66,9 +66,6 @@ namespace Sycorax.ControlCenter {
                 }
             }
 
-            //Kludge
-            //options.ConnectionString = "Server=AAmiens-154-1-79-121.w86-208.abo.wanadoo.fr;Database=RadioWin;Uid=Sycorax;Pwd=;";
-
             return true;
         }
 
