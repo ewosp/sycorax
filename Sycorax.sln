@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Auto Update", "Syco
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Auto Update CLI", "Sycorax Auto Update CLI\Sycorax Auto Update CLI.csproj", "{3C360CD4-C9F4-48B6-865B-4C140E7617A1}"
 EndProject
+Project("{E729F059-12D4-455F-A2A4-FDA8DD25E08A}") = "SetupMSI", "SetupMSI\SetupMSI.isproj", "{E584AC38-02CF-4070-98F6-C7B5CB567C36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C360CD4-C9F4-48B6-865B-4C140E7617A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E584AC38-02CF-4070-98F6-C7B5CB567C36}.Debug|Any CPU.ActiveCfg = Debug
+		{E584AC38-02CF-4070-98F6-C7B5CB567C36}.Debug|Any CPU.Build.0 = Debug
+		{E584AC38-02CF-4070-98F6-C7B5CB567C36}.Release|Any CPU.ActiveCfg = Release
+		{E584AC38-02CF-4070-98F6-C7B5CB567C36}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
