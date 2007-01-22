@@ -386,7 +386,7 @@ namespace Sycorax {
             get {
                 return Path.Combine(
                     //document and settings > <user profile> > local settings > application data > Sycorax
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                     @"Sycorax\SycoraxAutoUpdate.config"
                 );
             }
