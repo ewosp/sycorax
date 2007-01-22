@@ -387,10 +387,7 @@ namespace Sycorax.ControlCenter {
 			try {
 				if (labelInternalAutoUpdateStatus.Text == "Off") {
 					//Start our internal auto update
-					if (Program.internalAutoUpdate == null) {
-						Program.internalAutoUpdate = new InternalAutoUpdate();
-                        Program.databaseUpdate.LogEntry += new EventHandler<TimestampMessageEventArgs>(databaseUpdate_LogEntry);
-					}
+					if (Program.internalAutoUpdate == null) InitializeInternalAutoUpdate();
 					Program.internalAutoUpdate.Enabled = true;
 				} else {
 					//Stop our interal auto update
@@ -401,13 +398,32 @@ namespace Sycorax.ControlCenter {
 				if (Program.options.DebugMode) {
 					PrintException(ex);
 				}
+                MessageBox.Show(ex.Message, "Auto update - Échec de l'initialisation");
 				return;
 			}
 		}
 
-        void databaseUpdate_LogEntry (object sender, MessageEventArgs e) {
-            textBoxLog.Text += DateTime.Now.ToLongTimeString();
+        private void InitializeInternalAutoUpdate () {
+            Program.internalAutoUpdate = new InternalAutoUpdate();
+            Program.databaseUpdate.LogEntry += new EventHandler<TimestampMessageEventArgs>(databaseUpdate_LogEntry);
+            Program.databaseUpdate.SqlQuery += new EventHandler<TimestampMessageEventArgs>(databaseUpdate_LogEntry);
+        }
+
+        delegate void NewLogEntryCallback (string text);
+
+        public void NewLogEntry (string text) {
+            textBoxLog.Text += text;
             textBoxLog.Text += Environment.NewLine;
+        }
+        
+        void databaseUpdate_LogEntry (object sender, TimestampMessageEventArgs e) {
+            if (textBoxLog.InvokeRequired) {
+                //Thread-safe call
+                NewLogEntryCallback d = new NewLogEntryCallback(NewLogEntry);
+                Invoke(d, new object[] { e.ToString() });
+            } else {
+                NewLogEntry(e.ToString());
+            }
         }
 
 		public void RefreshInternalAutoUpdateLinks () {
@@ -475,9 +491,17 @@ namespace Sycorax.ControlCenter {
 				FilesToIndex.AddRange(GetAudioFiles(folder, true));
 			}
 
+            //Disable autoupdate if needed
+            bool reenableInternalAutoUpdate = false;
+            if (Program.internalAutoUpdate != null && Program.internalAutoUpdate.Enabled) {
+                Program.internalAutoUpdate.Enabled = false;
+                reenableInternalAutoUpdate = true;
+            }
+
 			//Now, we've to index all those file
-			if (Program.databaseUpdate == null) Program.databaseUpdate = new DatabaseUpdate(Program.options.ConnectionString);
-			Program.databaseUpdate.TruncateIndex();
+            if (Program.databaseUpdate != null) Program.databaseUpdate.Dispose();
+            Program.databaseUpdate = new DatabaseUpdate(Program.options.ConnectionString);
+            Program.databaseUpdate.TruncateIndex();
 			for (int i = 0 ; i < FilesToIndex.Count ; i++) {
 				//Add file to index
 				Program.databaseUpdate.AddFile(FilesToIndex[i]);
@@ -487,6 +511,9 @@ namespace Sycorax.ControlCenter {
 			//End
 			buttonStartRebuildIndex.Enabled = true;
 			progressBarRebuild.Visible = false;
+
+            //Reenable internal auto update if needed
+            if (reenableInternalAutoUpdate) InitializeInternalAutoUpdate();
 		}
 
 		/// <summary>
