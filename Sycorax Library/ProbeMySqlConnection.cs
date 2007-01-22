@@ -25,7 +25,9 @@ namespace Sycorax {
             try {
                 conn.Open();
             } catch (Exception e) {
-                Error(this, new ExceptionEventArgs(e));
+                if (Error != null) {
+                    Error(this, new ExceptionEventArgs(e));
+                }
             }
         }
 
@@ -47,7 +49,9 @@ namespace Sycorax {
         /// <param name="e">The <see cref="T:System.Data.StateChangeEventArgs"/> instance containing the event data.</param>
         private void conn_StateChange (object sender, StateChangeEventArgs e) {
             //TODO : check the string representation of CurrentState enum
-            StatusChange(this, new MessageEventArgs(e.CurrentState.ToString()));
+            if (StatusChange != null) {
+                StatusChange(this, new MessageEventArgs(e.CurrentState.ToString()));
+            }
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace Sycorax {
             );
             
             //Throws an exception to our Error event
-            Error(this, new ExceptionEventArgs(new Exception(error)));
+            if (Error != null) Error(this, new ExceptionEventArgs(new Exception(error)));
             
         }
 

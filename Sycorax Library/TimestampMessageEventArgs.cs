@@ -6,12 +6,23 @@ namespace Sycorax {
     /// <summary>
     /// MessageEventArgs
     /// </summary>
-    public class TimestampMessageEventArgs : MessageEventArgs {
-        public TimestampMessageEventArgs (DateTime time, string message) : base(message) {
+    public class TimestampMessageEventArgs : EventArgs {
+        public TimestampMessageEventArgs (DateTime time, string message) {
+            this.message = message;
             this.time = time;
         }
 
         private DateTime time;
+
+        private string message;
+
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
+        /// <value>The message.</value>
+        public string Message {
+            get { return message; }
+        }
 
         /// <summary>
         /// Gets the time.
@@ -22,7 +33,7 @@ namespace Sycorax {
         }
 
         public override string ToString () {
-            return String.Format("[{0}] {1}", DateTime.Now.ToLongTimeString(), Message);
+            return String.Format("[{0}] {1}", DateTime.Now.ToLongTimeString(), message);
         }
     }
 }
