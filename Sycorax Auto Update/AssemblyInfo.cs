@@ -10,9 +10,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Sycorax Auto Update")]
 [assembly: AssemblyDescription("Service de surveillance des fichiers en vue d'une mise à jour automatique de la base de données.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Double V Network")]
+[assembly: AssemblyCompany("Espace Win Open Source Project")]
 [assembly: AssemblyProduct("Sycorax")]
-[assembly: AssemblyCopyright("(c) 2006, Sébastien Santoro, tous droits réservés.")]
+[assembly: AssemblyCopyright("(c) 2006-2007, Espace Win Open Source Project, tous droits réservés.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
