@@ -36,7 +36,6 @@ namespace Sycorax.AutoUpdate {
             this.ServiceName = "SycoraxAutoUpdate";
             this.AutoLog = true;
             this.CanPauseAndContinue = true;
-            this.CanShutdown = true;
         }
 
         /// <summary>
