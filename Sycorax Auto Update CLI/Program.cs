@@ -41,7 +41,7 @@ namespace Sycorax.AutoUpdateCLI {
                 }
                 watchers = new SurveillanceDossiers[options.FoldersToWatch.Length];
                 for (int i = 0 ; i < options.FoldersToWatch.Length ; i++) {
-                    watchers[i] = new SurveillanceDossiers(options.FoldersToWatch[i], databaseUpdate);
+                    watchers[i] = new SurveillanceDossiers(options.FoldersToWatch[i], databaseUpdate, options.DeleteTunesIfOrphan, options.IndexSubdirectories);
                     watchers[i].Error += new EventHandler<ExceptionEventArgs>(Program_Error);
                     Console.WriteLine("    ° " + options.FoldersToWatch[i]);
                 }
