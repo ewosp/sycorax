@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Setup Wizard", "Syc
 		{F44648CC-244D-4FE8-A8B4-6629209EFBE6} = {F44648CC-244D-4FE8-A8B4-6629209EFBE6}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Winamp Gateway", "Sycorax Winamp Gateway\Sycorax Winamp Gateway.csproj", "{25D5E23B-7701-4FBE-A7B7-32ACF2D3E165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sycorax Winamp Pilot", "Sycorax Winamp Pilot\Sycorax Winamp Pilot.csproj", "{610A2DB1-1374-4D4A-8D4B-0A11A367393B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{F7AFD556-A27F-4893-928E-3775A7399FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7AFD556-A27F-4893-928E-3775A7399FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7AFD556-A27F-4893-928E-3775A7399FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D5E23B-7701-4FBE-A7B7-32ACF2D3E165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D5E23B-7701-4FBE-A7B7-32ACF2D3E165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D5E23B-7701-4FBE-A7B7-32ACF2D3E165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D5E23B-7701-4FBE-A7B7-32ACF2D3E165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{610A2DB1-1374-4D4A-8D4B-0A11A367393B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{610A2DB1-1374-4D4A-8D4B-0A11A367393B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{610A2DB1-1374-4D4A-8D4B-0A11A367393B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{610A2DB1-1374-4D4A-8D4B-0A11A367393B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

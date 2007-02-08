@@ -17,17 +17,41 @@ namespace Sycorax {
     /// </summary>
     public class SurveillanceDossiers : IDisposable {
         /// <summary>
-        /// Initialise une nouvelle surveillance de dossiers
+        /// Initializes a new instance of the <see cref="SurveillanceDossiers"/> class.
         /// </summary>
-        /// <param name="path">dossier à surveiller</param>
-        /// <param name="databaseUpdate">Database update component.</param>
-        public SurveillanceDossiers (string path, DatabaseUpdate databaseUpdate) {
+        /// <param name="path">The path to the folder to watch.</param>
+        /// <param name="databaseUpdate">The database update component.</param>
+        public SurveillanceDossiers (string path, DatabaseUpdate databaseUpdate)
+            : this(path, databaseUpdate, false) {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SurveillanceDossiers"/> class.
+        /// </summary>
+        /// <param name="path">The path to the folder to watch.</param>
+        /// <param name="databaseUpdate">The database update component.</param>
+        /// <param name="deleteTuneIfOrphan">if set to <c>true</c>, deletes tune if it's orphan.</param>
+        public SurveillanceDossiers (string path, DatabaseUpdate databaseUpdate, bool deleteTuneIfOrphan)
+            : this(path, databaseUpdate, deleteTuneIfOrphan, true) {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SurveillanceDossiers"/> class.
+        /// </summary>
+        /// <param name="path">The path to the folder to watch.</param>
+        /// <param name="databaseUpdate">The database update component.</param>
+        /// <param name="deleteTuneIfOrphan">if set to <c>true</c>, deletes tune if it's orphan.</param>
+        /// <param name="indexSubdirectories">if set to <c>true</c> indexes also subdirectories</param>
+        public SurveillanceDossiers (string path, DatabaseUpdate databaseUpdate, bool deleteTuneIfOrphan, bool indexSubdirectories) {
             watcher = new FileSystemWatcher(path);
             watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = indexSubdirectories;
             //watcher.Filter
             watcher.Changed += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.RecheckProperties(e.FullPath); };
             watcher.Created += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.AddFile(e.FullPath); };
-            watcher.Deleted += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.DelFile(e.FullPath, false); };
+            watcher.Deleted += delegate(object sender, FileSystemEventArgs e) { databaseUpdate.DelFile(e.FullPath, deleteTuneIfOrphan); };
             watcher.Error += delegate(object sender, ErrorEventArgs e) {
                 if (Error != null) Error(this, new ExceptionEventArgs(e.GetException()));
             };
