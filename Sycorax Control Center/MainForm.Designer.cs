@@ -209,6 +209,7 @@ namespace Sycorax.ControlCenter {
             this.buttonRAZOptions.TabIndex = 4;
             this.buttonRAZOptions.Text = "Restaurer les options par défaut";
             this.buttonRAZOptions.UseVisualStyleBackColor = false;
+            this.buttonRAZOptions.Click += new System.EventHandler(this.buttonRAZOptions_Click);
             // 
             // buttonEnregistrerOptions
             // 
@@ -221,6 +222,7 @@ namespace Sycorax.ControlCenter {
             this.buttonEnregistrerOptions.TabIndex = 3;
             this.buttonEnregistrerOptions.Text = "Enregistrer les préférences";
             this.buttonEnregistrerOptions.UseVisualStyleBackColor = false;
+            this.buttonEnregistrerOptions.Click += new System.EventHandler(this.buttonEnregistrerOptions_Click);
             // 
             // panelConfigMainOptions
             // 

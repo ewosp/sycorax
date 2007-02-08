@@ -575,7 +575,7 @@ namespace Sycorax.ControlCenter {
 		private void RefreshOptionsArea () {
 			//Page General
 			checkBoxDebugMode.Checked = Program.options.DebugMode;
-            checkBoxDebugMode.Checked = Program.options.IndexSubdirectories;
+            checkBoxIndexSubdirectories.Checked = Program.options.IndexSubdirectories;
 			checkBoxDeleteTunesIfOrphans.Checked = Program.options.DeleteTunesIfOrphan;
 
 			//Page Database
@@ -802,5 +802,6 @@ namespace Sycorax.ControlCenter {
 
 
 
-	}
+
+    }
 }
