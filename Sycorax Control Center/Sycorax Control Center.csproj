@@ -80,10 +80,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sycorax Auto Update\Sycorax Auto Update.csproj">
-      <Project>{63F94995-792D-44F7-86BB-E3C4DE4DA109}</Project>
-      <Name>Sycorax Auto Update</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sycorax Library\Sycorax Library.csproj">
       <Project>{F44648CC-244D-4FE8-A8B4-6629209EFBE6}</Project>
       <Name>Sycorax Library</Name>
