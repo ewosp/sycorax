@@ -17,7 +17,7 @@ namespace Sycorax.ControlCenter {
 			//Lancement d'une surveillance pour chaque dossier repris dans l'option FoldersToWatch
 			watchers = new SurveillanceDossiers[Program.options.FoldersToWatch.Length];
 			for (int i = 0 ; i < Program.options.FoldersToWatch.Length ; i++) {
-				watchers[i] = new SurveillanceDossiers(Program.options.FoldersToWatch[i], Program.databaseUpdate, Program.options.DeleteTunesIfOrphan);
+				watchers[i] = new SurveillanceDossiers(Program.options.FoldersToWatch[i], Program.databaseUpdate, Program.options.DeleteTunesIfOrphan, Program.options.IndexSubdirectories);
 				watchers[i].Error += new EventHandler<ExceptionEventArgs>(surveillanceDossiers_Error);
 			}
             enabled = true;
