@@ -93,9 +93,9 @@ namespace Sycorax {
                 sql = String.Format(
                     @"INSERT INTO Tunes (tune_by, tune_title, tune_comment)
                       VALUES ('{0}', '{1}', '{2}')",
-                    SqlEscape(tune.By),
-                    SqlEscape(tune.Title),
-                    SqlEscape(tune.Comment)
+                    Utilities.SqlEscape(tune.By),
+                    Utilities.SqlEscape(tune.Title),
+                    Utilities.SqlEscape(tune.Comment)
                  );
                 cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
@@ -110,7 +110,7 @@ namespace Sycorax {
             //2 - add file
             sql = String.Format(
                 "INSERT INTO Files (file_path, tune_id) VALUES ('{0}', '{1}')",
-                SqlEscape(tune.Path),
+                Utilities.SqlEscape(tune.Path),
                 TuneID
             );
 
@@ -133,9 +133,9 @@ namespace Sycorax {
             string sql = String.Format(
                 @"SELECT count(*) FROM Tunes
                   WHERE tune_by = '{0}' AND tune_title = '{1}' AND tune_comment = '{2}'",
-                SqlEscape(tune.By),
-                SqlEscape(tune.Title),
-                SqlEscape(tune.Comment)
+                Utilities.SqlEscape(tune.By),
+                Utilities.SqlEscape(tune.Title),
+                Utilities.SqlEscape(tune.Comment)
             );
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd = new MySqlCommand(sql, conn);
@@ -158,9 +158,9 @@ namespace Sycorax {
             string sql = String.Format(
                 @"SELECT tune_id FROM Tunes
                   WHERE tune_by = '{0}' AND tune_title = '{1}' AND tune_comment = '{2}'",
-                SqlEscape(tune.By),
-                SqlEscape(tune.Title),
-                SqlEscape(tune.Comment)
+                Utilities.SqlEscape(tune.By),
+                Utilities.SqlEscape(tune.Title),
+                Utilities.SqlEscape(tune.Comment)
             );
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -181,12 +181,12 @@ namespace Sycorax {
             int TuneID = -1;
             string sql; MySqlCommand cmd;
 
-            string filepath = SqlEscape(Path.GetFullPath(file));
+            string filepath = Utilities.SqlEscape(Path.GetFullPath(file));
 
             if (deleteTuneIfOrphan) {
                 //Before delete the record, we've to get TuneID
                 sql = String.Format(
-                    "SELECT tune_id FROM Files WHERE file_path LIKE '{0}'",
+                    "SELECT tune_id FROM Files WHERE file_path = '{0}'",
                     filepath
                 );
                 cmd = new MySqlCommand(sql, conn);
@@ -200,7 +200,7 @@ namespace Sycorax {
 
             //Delete file
             sql = String.Format(
-                "DELETE FROM Files WHERE file_path LIKE '{0}'",
+                "DELETE FROM Files WHERE file_path = '{0}'",
                 filepath
             );
             cmd = new MySqlCommand(sql, conn);
@@ -243,16 +243,16 @@ namespace Sycorax {
             if (!Directory.Exists(newPath)) {
                 //A file ? Easy, just one row to update :)
                 sql = String.Format(
-                    "UPDATE Files SET file_path = '{0}' WHERE file_path LIKE '{1}'",
-                    SqlEscape(Path.GetFullPath(newPath)),
-                    SqlEscape(Path.GetFullPath(oldPath))
+                    "UPDATE Files SET file_path = '{0}' WHERE file_path = '{1}'",
+                    Utilities.SqlEscape(Path.GetFullPath(newPath)),
+                    Utilities.SqlEscape(Path.GetFullPath(oldPath))
                 );
                 logEntry = String.Format("File moved: {0} -> {1}", oldPath, newPath);
             } else {
                 /*
                  * Arg ... we've a massive update to do :p 
                  * We've to rename d:\oldpath\tune.mp3 into d:\newpath\tune.mp3
-                 * - WHERE file_path LIKE '{1}%' selects all files beginning with {1} ie newPath
+                 * - WHERE file_path = '{1}%' selects all files beginning with {1} ie newPath
                  * - new file_path begins with newPath and ends with the filename
                  *   = CONCAT(newPath, filename)
                  *   = CONCAT('{0}', filename)
@@ -262,9 +262,9 @@ namespace Sycorax {
                  *   = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)
                  */
                 sql = String.Format(
-                    "UPDATE Files SET file_path = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path LIKE '{1}%'",
-                    SqlEscape(Path.GetFullPath(newPath)),
-                    SqlEscape(SqlEscape(Path.GetFullPath(oldPath)))   //strangely, we need \\\\ escapement in WHERE clause
+                    "UPDATE Files SET file_path = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path = '{1}%'",
+                    Utilities.SqlEscape(Path.GetFullPath(newPath)),
+                    Utilities.SqlEscape(Utilities.SqlEscape(Path.GetFullPath(oldPath)))   //strangely, we need \\\\ escapement in WHERE clause
                 );
                 logEntry = String.Format("Directory updated: {0} -> {1}", oldPath, newPath);
             }
@@ -278,15 +278,6 @@ namespace Sycorax {
         }
 
         #region MySQL functions
-        /// <summary>
-        /// Escape a string, sql way.
-        /// </summary>
-        /// <param name="toEscape">The string to escape.</param>
-        /// <returns>The escaped string</returns>
-        private static string SqlEscape (string toEscape) {
-            return toEscape.Replace(@"\", @"\\").Replace(@"'", @"\'");
-        }
-
         /// <summary>
         /// Get the last insert ID.
         /// </summary>
