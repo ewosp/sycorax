@@ -40,6 +40,11 @@ namespace Sycorax.ControlCenter {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonRAZOptions = new System.Windows.Forms.Button();
             this.buttonEnregistrerOptions = new System.Windows.Forms.Button();
+            this.panelConfigMainOptions = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxIndexSubdirectories = new System.Windows.Forms.CheckBox();
+            this.checkBoxDebugMode = new System.Windows.Forms.CheckBox();
+            this.checkBoxDeleteTunesIfOrphans = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanelConfigDirectories = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.textBoxFolderToAdd = new System.Windows.Forms.TextBox();
@@ -88,16 +93,14 @@ namespace Sycorax.ControlCenter {
             this.linkLabelServicePauseContinue = new System.Windows.Forms.LinkLabel();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.labelNotYetDefinedPanel = new System.Windows.Forms.Label();
-            this.panelConfigMainOptions = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBoxDebugMode = new System.Windows.Forms.CheckBox();
-            this.checkBoxDeleteTunesIfOrphans = new System.Windows.Forms.CheckBox();
             this.tabPageDebug.SuspendLayout();
             this.tabPageConfig.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.panelConfigMainOptions.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tableLayoutPanelConfigDirectories.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panelConfigDatabase.SuspendLayout();
@@ -111,8 +114,6 @@ namespace Sycorax.ControlCenter {
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControlMain.SuspendLayout();
-            this.panelConfigMainOptions.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPageDebug
@@ -138,6 +139,7 @@ namespace Sycorax.ControlCenter {
             // 
             // tabPageConfig
             // 
+            this.tabPageConfig.BackColor = System.Drawing.Color.White;
             this.tabPageConfig.Controls.Add(this.splitContainer1);
             this.tabPageConfig.Location = new System.Drawing.Point(4, 22);
             this.tabPageConfig.Name = "tabPageConfig";
@@ -145,7 +147,6 @@ namespace Sycorax.ControlCenter {
             this.tabPageConfig.Size = new System.Drawing.Size(577, 543);
             this.tabPageConfig.TabIndex = 4;
             this.tabPageConfig.Text = "Configuration";
-            this.tabPageConfig.UseVisualStyleBackColor = true;
             this.tabPageConfig.Enter += new System.EventHandler(this.tabPageConfig_Enter);
             // 
             // splitContainer1
@@ -161,7 +162,7 @@ namespace Sycorax.ControlCenter {
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanelConfigDirectories);
+            this.splitContainer1.Panel2.Controls.Add(this.panelConfigMainOptions);
             this.splitContainer1.Size = new System.Drawing.Size(571, 537);
             this.splitContainer1.SplitterDistance = 196;
             this.splitContainer1.TabIndex = 0;
@@ -220,6 +221,61 @@ namespace Sycorax.ControlCenter {
             this.buttonEnregistrerOptions.TabIndex = 3;
             this.buttonEnregistrerOptions.Text = "Enregistrer les préférences";
             this.buttonEnregistrerOptions.UseVisualStyleBackColor = false;
+            // 
+            // panelConfigMainOptions
+            // 
+            this.panelConfigMainOptions.Controls.Add(this.groupBox1);
+            this.panelConfigMainOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelConfigMainOptions.Location = new System.Drawing.Point(0, 0);
+            this.panelConfigMainOptions.Name = "panelConfigMainOptions";
+            this.panelConfigMainOptions.Size = new System.Drawing.Size(371, 537);
+            this.panelConfigMainOptions.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.checkBoxIndexSubdirectories);
+            this.groupBox1.Controls.Add(this.checkBoxDebugMode);
+            this.groupBox1.Controls.Add(this.checkBoxDeleteTunesIfOrphans);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(371, 106);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Options générales";
+            // 
+            // checkBoxIndexSubdirectories
+            // 
+            this.checkBoxIndexSubdirectories.AutoSize = true;
+            this.checkBoxIndexSubdirectories.Location = new System.Drawing.Point(16, 43);
+            this.checkBoxIndexSubdirectories.Name = "checkBoxIndexSubdirectories";
+            this.checkBoxIndexSubdirectories.Size = new System.Drawing.Size(195, 17);
+            this.checkBoxIndexSubdirectories.TabIndex = 10;
+            this.checkBoxIndexSubdirectories.Text = "Indexer également les sous-dossiers";
+            this.checkBoxIndexSubdirectories.UseVisualStyleBackColor = true;
+            this.checkBoxIndexSubdirectories.CheckedChanged += new System.EventHandler(this.checkBoxIndexSubdirectories_CheckedChanged);
+            // 
+            // checkBoxDebugMode
+            // 
+            this.checkBoxDebugMode.AutoSize = true;
+            this.checkBoxDebugMode.Location = new System.Drawing.Point(17, 63);
+            this.checkBoxDebugMode.Name = "checkBoxDebugMode";
+            this.checkBoxDebugMode.Size = new System.Drawing.Size(282, 17);
+            this.checkBoxDebugMode.TabIndex = 9;
+            this.checkBoxDebugMode.Text = "Activer les fonctionnalités du mode debug de Sycorax.";
+            this.checkBoxDebugMode.UseVisualStyleBackColor = true;
+            this.checkBoxDebugMode.CheckedChanged += new System.EventHandler(this.checkBoxDebugMode_CheckedChanged);
+            // 
+            // checkBoxDeleteTunesIfOrphans
+            // 
+            this.checkBoxDeleteTunesIfOrphans.AutoSize = true;
+            this.checkBoxDeleteTunesIfOrphans.Location = new System.Drawing.Point(16, 24);
+            this.checkBoxDeleteTunesIfOrphans.Name = "checkBoxDeleteTunesIfOrphans";
+            this.checkBoxDeleteTunesIfOrphans.Size = new System.Drawing.Size(339, 17);
+            this.checkBoxDeleteTunesIfOrphans.TabIndex = 8;
+            this.checkBoxDeleteTunesIfOrphans.Text = "Supprimer les morceaux de la base de données s\'ils sont orphelins.";
+            this.checkBoxDeleteTunesIfOrphans.UseVisualStyleBackColor = true;
+            this.checkBoxDeleteTunesIfOrphans.CheckedChanged += new System.EventHandler(this.checkBoxDeleteTunesIfOrphans_CheckedChanged);
             // 
             // tableLayoutPanelConfigDirectories
             // 
@@ -315,7 +371,7 @@ namespace Sycorax.ControlCenter {
             this.checkedListBoxFolders.FormattingEnabled = true;
             this.checkedListBoxFolders.Location = new System.Drawing.Point(3, 66);
             this.checkedListBoxFolders.Name = "checkedListBoxFolders";
-            this.checkedListBoxFolders.Size = new System.Drawing.Size(365, 199);
+            this.checkedListBoxFolders.Size = new System.Drawing.Size(365, 201);
             this.checkedListBoxFolders.TabIndex = 6;
             this.checkedListBoxFolders.SelectedIndexChanged += new System.EventHandler(this.checkedListBoxFolders_SelectedIndexChanged);
             // 
@@ -743,47 +799,6 @@ namespace Sycorax.ControlCenter {
             this.labelNotYetDefinedPanel.TabIndex = 0;
             this.labelNotYetDefinedPanel.Text = "Ce panneau n\'est pas encore défini.";
             // 
-            // panelConfigMainOptions
-            // 
-            this.panelConfigMainOptions.Controls.Add(this.groupBox1);
-            this.panelConfigMainOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelConfigMainOptions.Location = new System.Drawing.Point(0, 0);
-            this.panelConfigMainOptions.Name = "panelConfigMainOptions";
-            this.panelConfigMainOptions.Size = new System.Drawing.Size(405, 775);
-            this.panelConfigMainOptions.TabIndex = 0;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.checkBoxDebugMode);
-            this.groupBox1.Controls.Add(this.checkBoxDeleteTunesIfOrphans);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(405, 78);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Options générales";
-            // 
-            // checkBoxDebugMode
-            // 
-            this.checkBoxDebugMode.AutoSize = true;
-            this.checkBoxDebugMode.Location = new System.Drawing.Point(16, 46);
-            this.checkBoxDebugMode.Name = "checkBoxDebugMode";
-            this.checkBoxDebugMode.Size = new System.Drawing.Size(282, 17);
-            this.checkBoxDebugMode.TabIndex = 9;
-            this.checkBoxDebugMode.Text = "Activer les fonctionnalités du mode debug de Sycorax.";
-            this.checkBoxDebugMode.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxDeleteTunesIfOrphans
-            // 
-            this.checkBoxDeleteTunesIfOrphans.AutoSize = true;
-            this.checkBoxDeleteTunesIfOrphans.Location = new System.Drawing.Point(16, 24);
-            this.checkBoxDeleteTunesIfOrphans.Name = "checkBoxDeleteTunesIfOrphans";
-            this.checkBoxDeleteTunesIfOrphans.Size = new System.Drawing.Size(339, 17);
-            this.checkBoxDeleteTunesIfOrphans.TabIndex = 8;
-            this.checkBoxDeleteTunesIfOrphans.Text = "Supprimer les morceaux de la base de données s\'ils sont orphelins.";
-            this.checkBoxDeleteTunesIfOrphans.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -800,6 +815,9 @@ namespace Sycorax.ControlCenter {
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.panelConfigMainOptions.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tableLayoutPanelConfigDirectories.ResumeLayout(false);
             this.tableLayoutPanelConfigDirectories.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -820,9 +838,6 @@ namespace Sycorax.ControlCenter {
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabControlMain.ResumeLayout(false);
-            this.panelConfigMainOptions.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -886,5 +901,6 @@ namespace Sycorax.ControlCenter {
 		private System.Windows.Forms.Label labelInternalAutoUpdateStatus;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox checkBoxIndexSubdirectories;
 	}
 }

@@ -80,7 +80,7 @@ namespace Sycorax {
         public void SetDefaults () {
             connectionString = "Server=localhost;Database=Sycorax;Uid=root;Pwd=;";
             debugMode = true;
-            deleteTunesIfOrphans = false;
+            deleteTunesIfOrphan = false;
             extensionsToWatch = new List<string>(new string[14] {
                 //Audio files
                 ".mp3", ".aac", ".ogg", ".wav", ".wma", ".mpc", ".mp4", ".flac", ".mid", ".m4a",
@@ -190,19 +190,28 @@ namespace Sycorax {
             set { debugMode = value; }
         }
 
-        private bool deleteTunesIfOrphans;
+        private bool deleteTunesIfOrphan;
         /// <summary>
         /// Gets or sets a value indicating whether tunes has to be deleted if orphans.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if we've to delete orphans tunes ; otherwise, <c>false</c>.
         /// </value>
-        public bool DeleteTunesIfOrphans {
-            get { return deleteTunesIfOrphans; }
-            set { deleteTunesIfOrphans = value; }
+        public bool DeleteTunesIfOrphan {
+            get { return deleteTunesIfOrphan; }
+            set { deleteTunesIfOrphan = value; }
         }
 
-        
+        private bool indexSubdirectories;
+        /// <summary>
+        /// Gets or sets a value indicating whether subdirectories has to be indexed.
+        /// </summary>
+        /// <value><c>true</c> if subdirectories has to be indexed; otherwise, <c>false</c>.</value>
+        public bool IndexSubdirectories {
+            get { return indexSubdirectories; }
+            set { indexSubdirectories = value; }
+        }
+               
 
         #region Databases stuff
         /// <summary>

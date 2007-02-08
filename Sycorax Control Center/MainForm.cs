@@ -224,9 +224,20 @@ namespace Sycorax.ControlCenter {
 		/// <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
 		private void checkBoxDeleteTunesIfOrphans_CheckedChanged (object sender, EventArgs e) {
 			CheckBox checkBox = (CheckBox)sender;
-			Program.options.DeleteTunesIfOrphans = checkBox.Checked;
+			Program.options.DeleteTunesIfOrphan = checkBox.Checked;
 			OptionsHasBeenModified = true;
 		}
+
+        /// <summary>
+        /// Handles the CheckedChanged event of the checkBoxIndexSubdirectories control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        private void checkBoxIndexSubdirectories_CheckedChanged (object sender, EventArgs e) {
+            CheckBox checkBox = (CheckBox)sender;
+            Program.options.IndexSubdirectories = checkBox.Checked;
+            OptionsHasBeenModified = true;
+        }
 
 		/// <summary>
 		/// Handles the CheckedChanged event of the checkBoxDebugMode control.
@@ -488,7 +499,7 @@ namespace Sycorax.ControlCenter {
 			//Let's go
 			foreach (string folder in Program.options.FoldersToWatch) {
 				//get the audio file contained in each folder to watch
-				FilesToIndex.AddRange(GetAudioFiles(folder, true));
+				FilesToIndex.AddRange(GetAudioFiles(folder, Program.options.IndexSubdirectories));
 			}
 
             //Disable autoupdate if needed
@@ -564,7 +575,8 @@ namespace Sycorax.ControlCenter {
 		private void RefreshOptionsArea () {
 			//Page General
 			checkBoxDebugMode.Checked = Program.options.DebugMode;
-			checkBoxDeleteTunesIfOrphans.Checked = Program.options.DeleteTunesIfOrphans;
+            checkBoxDebugMode.Checked = Program.options.IndexSubdirectories;
+			checkBoxDeleteTunesIfOrphans.Checked = Program.options.DeleteTunesIfOrphan;
 
 			//Page Database
 			textBoxConnectionString.Text = Program.options.ConnectionString;
@@ -787,6 +799,8 @@ namespace Sycorax.ControlCenter {
 			frm.ShowDialog();
 		}
 		#endregion
+
+
 
 	}
 }
