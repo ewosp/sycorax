@@ -191,8 +191,12 @@ namespace Sycorax {
                 );
                 cmd = new MySqlCommand(sql, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-                TuneID = reader.GetInt32(0);
+                if (reader.Read()) {
+                    TuneID = reader.GetInt32(0);
+                } else {
+                    //Tune has already been deleted
+                    deleteTuneIfOrphan = false;
+                }
                 reader.Close();
                 cmd.Dispose();
                 SqlLog(sql);
@@ -255,16 +259,22 @@ namespace Sycorax {
                  * - WHERE file_path = '{1}%' selects all files beginning with {1} ie newPath
                  * - new file_path begins with newPath and ends with the filename
                  *   = CONCAT(newPath, filename)
-                 *   = CONCAT('{0}', filename)
-                 *   = CONCAT('{0}', end of '{1}')
+                 *   = CONCAT('{0}\\\\', filename)
+                 *   = CONCAT('{0}\\\\', end of '{1}')
                  *     the end of '{1}' is the substring from the character following oldPath
-                 *   = CONCAT('{0}', SUBSTRING(file_path FROM the character following oldPath)
-                 *   = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)
+                 *   = CONCAT('{0}\\\\', SUBSTRING(file_path FROM the character following oldPath)
+                 *   = CONCAT('{0}\\\\', SUBSTRING(file_path FROM LENGTH('{0}') + 1)
+                 *
+                 *     Oh, why {0}\\\\ ? To add a trailing \ at our newPath.
+                 *     Here we've 4 \, one escaped for MySQL, one for C#
+                 *     Yes, if we've to declare a regexp expression in a sql statement without SqlEscape() call, we'll need \\\\\\\\ :^p
                  */
                 sql = String.Format(
-                    "UPDATE Files SET file_path = CONCAT('{0}', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path = '{1}%'",
+                    "UPDATE Files SET file_path = CONCAT('{0}\\\\', SUBSTRING(file_path FROM LENGTH('{0}') + 1)) WHERE file_path LIKE '{1}%'",
                     Utilities.SqlEscape(Path.GetFullPath(newPath)),
-                    Utilities.SqlEscape(Utilities.SqlEscape(Path.GetFullPath(oldPath)))   //strangely, we need \\\\ escapement in WHERE clause
+                    //LIKE ... is a regexp, so we need to double escape :
+                    //TODO : replace oneUtilities.SqlEscape by a escape regex compliant
+                    Utilities.SqlEscape(Utilities.SqlEscape(Path.GetFullPath(oldPath)))
                 );
                 logEntry = String.Format("Directory updated: {0} -> {1}", oldPath, newPath);
             }
