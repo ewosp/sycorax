@@ -1,0 +1,48 @@
+
+         ____
+        /\  _`\                 Espace Win Open Source Project
+        \ \,\L\_\  __  __    ___    ___   _ __    __     __  _
+         \/_\__ \ /\ \/\ \  /'___\ / __`\/\`'__\/'__`\  /\ \/'\
+           /\ \L\ \ \ \_\ \/\ \__//\ \L\ \ \ \//\ \L\.\_\/>  </
+           \ `\____\/`____ \ \____\ \____/\ \_\\ \__/.\_\/\_/\_\
+            \/_____/`/___/> \/____/\/___/  \/_/ \/__/\/_/\//\/_/
+                       /\___/
+                       \/__/         Indexez vos MP3 vers MySQL
+
+________________________________________________________________________
+ 
+    URL ....... http://www.espace-win.info/EWOSP/Sycorax/
+    Bugs ...... http://bugzilla.espace-win.org/
+    Devs ...... http://www.espace-win.info/EWOSP/Sycorax/Dev/FAQ.html
+    SF ........ http://sourceforge.net/projects/sycorax
+    Support ... IRC : UnderNet #Win
+________________________________________________________________________
+ 
+
+    Sycorax est un logiciel d'indexation de fichiers audio et service de
+    mise à jour automatique de cet index dans une base de données MySQL.
+
+    Il est composé de :
+
+    * Sycorax Control Center, centre de contrôle GUI permettant de con-
+      figurer Sycorax, de regénérer l'index et de contrôler le service
+      Sycorax Auto Update
+       
+    * Sycorax Auto Update, service Windows surveillant les dossiers en
+      vue de maintenir à jour l'index
+       
+    * Sycorax Auto Update CLI, une interface en ligne de commande pour
+      remplacer le service
+       
+    * Sycorax Library, une bibliothèque comportant les classes utilisées
+      par les autres composants :
+          o DatabaseUpdate
+          o SurveillanceDossiers
+          o ProbeMySqlConnection
+          o la gestion des options
+             
+      Si vous êtes développeur .Net, vous pouvez librement utiliser
+      Sycorax Library pour créer d'autres modules Sycorax ou d'autres
+      applicaitons d'indexations.
+
+________________________________________________________________________
